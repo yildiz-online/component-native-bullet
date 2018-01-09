@@ -59,6 +59,32 @@ if not _OPTIONS["no-enet"] then
 		defines {"BT_ENABLE_ENET"}
 	end
 
+	if not _OPTIONS["no-clsocket"] then
+
+                includedirs {"../../examples/ThirdPartyLibs/clsocket/src"}
+
+		 if os.is("Windows") then
+                	defines { "WIN32" }
+                	links {"Ws2_32","Winmm"}
+       		 end
+        	if os.is("Linux") then
+                	defines {"_LINUX"}
+        	end
+        	if os.is("MacOSX") then
+                	defines {"_DARWIN"}
+        	end
+
+                links {"clsocket"}
+
+                files {
+                        "../../examples/SharedMemory/PhysicsClientTCP.cpp",
+                        "../../examples/SharedMemory/PhysicsClientTCP.h",
+                        "../../examples/SharedMemory/PhysicsClientTCP_C_API.cpp",
+                        "../../examples/SharedMemory/PhysicsClientTCP_C_API.h",
+                }
+                defines {"BT_ENABLE_CLSOCKET"}
+        end
+
 
 		files {
 			"pybullet.c",
@@ -80,6 +106,7 @@ if not _OPTIONS["no-enet"] then
 			"../../examples/SharedMemory/PhysicsServer.cpp",
 			"../../examples/SharedMemory/PhysicsServer.h",
 			"../../examples/SharedMemory/PhysicsServerExample.cpp",
+			"../../examples/SharedMemory/PhysicsServerExampleBullet2.cpp",
 			"../../examples/SharedMemory/SharedMemoryInProcessPhysicsC_API.cpp",
 			"../../examples/SharedMemory/PhysicsServerSharedMemory.cpp",
 			"../../examples/SharedMemory/PhysicsServerSharedMemory.h",
@@ -89,6 +116,8 @@ if not _OPTIONS["no-enet"] then
 			"../../examples/SharedMemory/PhysicsDirectC_API.h",
 			"../../examples/SharedMemory/PhysicsServerCommandProcessor.cpp",
 			"../../examples/SharedMemory/PhysicsServerCommandProcessor.h",
+			"../../examples/SharedMemory/b3PluginManager.cpp",
+			"../../examples/SharedMemory/b3PluginManager.h",
 			"../../examples/SharedMemory/PhysicsClientSharedMemory.cpp",
 			"../../examples/SharedMemory/PhysicsClientSharedMemory.h",
 			"../../examples/SharedMemory/PhysicsClientSharedMemory_C_API.cpp",
@@ -99,6 +128,8 @@ if not _OPTIONS["no-enet"] then
 			"../../examples/SharedMemory/Win32SharedMemory.h",
 			"../../examples/SharedMemory/PosixSharedMemory.cpp",
 			"../../examples/SharedMemory/PosixSharedMemory.h",
+			"../../examples/SharedMemory/SharedMemoryCommands.h",
+			"../../examples/SharedMemory/SharedMemoryPublic.h",
 			"../../examples/Utils/b3ResourcePath.cpp",
 			"../../examples/Utils/b3ResourcePath.h",
 			"../../examples/Utils/RobotLoggingUtil.cpp",

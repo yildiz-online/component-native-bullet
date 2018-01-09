@@ -1,5 +1,5 @@
 
-project "App_SharedMemoryPhysics"
+project "App_PhysicsServer_SharedMemory"
 
 if _OPTIONS["ios"] then
 	kind "WindowedApp"
@@ -7,7 +7,7 @@ else
 	kind "ConsoleApp"
 end
 
-includedirs {".","../../src", "../ThirdPartyLibs",}
+includedirs {".","../../src", "../ThirdPartyLibs"}
 
 links {
 	"Bullet3Common","BulletInverseDynamicsUtils", "BulletInverseDynamics",	"BulletDynamics","BulletCollision", "LinearMath", "BussIK"
@@ -23,6 +23,7 @@ myfiles =
 	"PhysicsClientSharedMemory.cpp",
 	"PhysicsClientExample.cpp",
 	"PhysicsServerExample.cpp",
+	"PhysicsServerExampleBullet2.cpp",
 	"PhysicsServerSharedMemory.cpp",
 	"PhysicsServerSharedMemory.h",
 	"PhysicsServer.cpp",
@@ -52,6 +53,8 @@ myfiles =
 	"SharedMemoryCommandProcessor.h",
 	"PhysicsServerCommandProcessor.cpp",
 	"PhysicsServerCommandProcessor.h",
+	"b3PluginManager.cpp",
+	"b3PluginManager.h",
 	"TinyRendererVisualShapeConverter.cpp",
 	"TinyRendererVisualShapeConverter.h",
 	"../TinyRenderer/geometry.cpp",
@@ -98,6 +101,7 @@ myfiles =
 	"../ThirdPartyLibs/tinyxml/tinyxmlparser.cpp",
 	"../Importers/ImportMeshUtility/b3ImportMeshUtility.cpp",
 	"../ThirdPartyLibs/stb_image/stb_image.cpp",     
+
 }
 
 files {
@@ -141,7 +145,7 @@ files {
 	end
 
 
-project "App_SharedMemoryPhysics_GUI"
+project "App_PhysicsServer_SharedMemory_GUI"
 
 if _OPTIONS["ios"] then
         kind "WindowedApp"
@@ -240,8 +244,10 @@ if os.is("MacOSX") then
 	--defines {"__MACOSX_CORE__"}
 end
 
+
+
 if os.is("Windows") then 
-	project "App_SharedMemoryPhysics_VR"
+	project "App_PhysicsServer_SharedMemory_VR"
 	--for now, only enable VR under Windows, until compilation issues are resolved on Mac/Linux
 	defines {"B3_USE_STANDALONE_EXAMPLE","BT_ENABLE_VR"}
 	
@@ -280,7 +286,36 @@ if os.is("Windows") then
 			end
 		
 	end
-		
+	if _OPTIONS["audio"] then
+			files {
+				"../TinyAudio/b3ADSR.cpp",
+				"../TinyAudio/b3AudioListener.cpp",
+				"../TinyAudio/b3ReadWavFile.cpp",
+				"../TinyAudio/b3SoundEngine.cpp",
+				"../TinyAudio/b3SoundSource.cpp",
+				"../TinyAudio/b3WriteWavFile.cpp",
+				"../TinyAudio/RtAudio.cpp",
+			}
+			
+			defines {"B3_ENABLE_TINY_AUDIO"}
+			
+			if os.is("Windows") then
+				links {"winmm","Wsock32","dsound"}
+				defines {"WIN32","__WINDOWS_MM__","__WINDOWS_DS__"}
+			end
+			
+			if os.is("Linux") then initX11() 
+			                defines  {"__OS_LINUX__","__LINUX_ALSA__"}
+				links {"asound","pthread"}
+			end
+
+
+			if os.is("MacOSX") then
+				links{"Cocoa.framework"}
+				links{"CoreAudio.framework", "coreMIDI.framework", "Cocoa.framework"}
+				defines {"__OS_MACOSX__","__MACOSX_CORE__"}
+			end
+		end
 	includedirs {
 			".","../../src", "../ThirdPartyLibs",
 			"../ThirdPartyLibs/openvr/headers",
@@ -313,12 +348,17 @@ if os.is("Windows") then
 					"../ThirdPartyLibs/openvr/samples/shared/lodepng.h",
 					"../ThirdPartyLibs/openvr/samples/shared/Matrices.cpp",
 					"../ThirdPartyLibs/openvr/samples/shared/Matrices.h",
+					"../ThirdPartyLibs/openvr/samples/shared/strtools.cpp",
 					"../ThirdPartyLibs/openvr/samples/shared/pathtools.cpp",
 					"../ThirdPartyLibs/openvr/samples/shared/pathtools.h",
 					"../ThirdPartyLibs/openvr/samples/shared/Vectors.h",
 	}
 	if os.is("Windows") then 
-		libdirs {"../ThirdPartyLibs/openvr/lib/win32"}
+		configuration {"x32"}
+			libdirs {"../ThirdPartyLibs/openvr/lib/win32"}
+		configuration {"x64"}
+			libdirs {"../ThirdPartyLibs/openvr/lib/win64"}
+		configuration{}
 	end
 	
 	if os.is("Linux") then initX11() end
@@ -367,3 +407,8 @@ end
 
 
 include "udp"
+include "tcp"
+include "plugins/testPlugin"
+include "plugins/vrSyncPlugin"
+
+

@@ -21,6 +21,9 @@ ENDIF()
 
 IF (NOT WIN32)
 	LINK_LIBRARIES(		pthread	)
+	IF (NOT APPLE)
+		LINK_LIBRARIES(${DL})
+	ENDIF()
 ENDIF()
 
 	ADD_EXECUTABLE(Test_PhysicsClientServer
@@ -39,6 +42,7 @@ ENDIF()
                         ../../examples/SharedMemory/PhysicsDirectC_API.h
                         ../../examples/SharedMemory/PhysicsServerCommandProcessor.cpp
                         ../../examples/SharedMemory/PhysicsServerCommandProcessor.h
+                        ../../examples/SharedMemory/b3PluginManager.cpp
                         ../../examples/SharedMemory/PhysicsClientSharedMemory.cpp
                         ../../examples/SharedMemory/PhysicsClientSharedMemory.h
 						../../examples/SharedMemory/PhysicsClientSharedMemory_C_API.cpp
@@ -56,17 +60,21 @@ ENDIF()
                         ../../examples/SharedMemory/PosixSharedMemory.h
                         ../../examples/Utils/b3ResourcePath.cpp
                         ../../examples/Utils/b3ResourcePath.h
-                        ../../examples/Utils/RobotLoggingUtil.cpp
+                        ../../examples/Utils/b3Clock.cpp
+                        ../../examples/Utils/b3Clock.h
+												../../examples/Utils/ChromeTraceUtil.cpp
+												../../examples/Utils/ChromeTraceUtil.h
+						../../examples/Utils/RobotLoggingUtil.cpp
                         ../../examples/Utils/RobotLoggingUtil.h
-									      ../../examples/SharedMemory/TinyRendererVisualShapeConverter.cpp
-												../../examples/SharedMemory/TinyRendererVisualShapeConverter.h
-												../../examples/OpenGLWindow/SimpleCamera.cpp
-												../../examples/OpenGLWindow/SimpleCamera.h
-												../../examples/TinyRenderer/geometry.cpp
-												../../examples/TinyRenderer/model.cpp
-												../../examples/TinyRenderer/tgaimage.cpp
-												../../examples/TinyRenderer/our_gl.cpp
-												../../examples/TinyRenderer/TinyRenderer.cpp
+					    ../../examples/SharedMemory/TinyRendererVisualShapeConverter.cpp
+						../../examples/SharedMemory/TinyRendererVisualShapeConverter.h
+						../../examples/OpenGLWindow/SimpleCamera.cpp
+						../../examples/OpenGLWindow/SimpleCamera.h
+						../../examples/TinyRenderer/geometry.cpp
+						../../examples/TinyRenderer/model.cpp
+						../../examples/TinyRenderer/tgaimage.cpp
+						../../examples/TinyRenderer/our_gl.cpp
+						../../examples/TinyRenderer/TinyRenderer.cpp
                         ../../examples/ThirdPartyLibs/tinyxml/tinystr.cpp
                         ../../examples/ThirdPartyLibs/tinyxml/tinyxml.cpp
                         ../../examples/ThirdPartyLibs/tinyxml/tinyxmlerror.cpp
