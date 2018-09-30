@@ -4,7 +4,8 @@ services:
   - docker
 
 before_install:
-  - docker pull moussavdb/build-java
+  - docker pull moussavdb/build-java-native
 
 script:
-  - docker run -v $PWD:/src -w /src moussavdb/build-java mvn -V -s settings.xml clean install
+  - docker run -v $PWD:/src -w /src moussavdb/build-java-native mvn -V -s settings.xml clean install
+
