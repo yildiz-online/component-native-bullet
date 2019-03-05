@@ -28,3 +28,4 @@ rm bullet.pc
 rm BulletConfig.cmake
 
 return $r1
+

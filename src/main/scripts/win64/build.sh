@@ -29,3 +29,4 @@ rm BulletConfig.cmake
 rm -R lib
 
 return $r1
+
