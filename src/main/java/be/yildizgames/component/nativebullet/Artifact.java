@@ -29,5 +29,8 @@ package be.yildizgames.component.nativebullet;
  */
 public class Artifact {
 
+    /**
+     * Module name.
+     */
     public static final String name = "Bullet physics";
 }
