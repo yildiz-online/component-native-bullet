@@ -30,5 +30,4 @@ rm bullet.pc
 rm BulletConfig.cmake
 rm -R lib
 
-return $r1
-
+exit ${r1}
